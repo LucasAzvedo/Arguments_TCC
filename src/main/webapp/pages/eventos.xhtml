@@ -1,0 +1,116 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Evento</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Evento</li>
+			</ol>
+		</section>
+		<section class="content">
+
+			<div class="box box-default">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Opções do Evento</h3>
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+
+				<h:form id="form1">
+					<div class="box-body">
+						<div class="row">
+							<div class="col-sm-6 col-md-4">
+								<div class="input-group">
+									<p:inputText value="#{eventoUsuarioManager.nomePesquisa}" placeholder="Pesquisar..."
+												styleClass="form-control"/><span
+										class="input-group-btn"> 
+										<p:commandLink
+											update="tableEventos" ajax="false"
+											action="#{eventoUsuarioManager.pesquisaEvento()}"
+											styleClass="btn btn-flat">
+											<i class="fa fa-search"></i>
+										</p:commandLink>
+										
+									</span>
+								</div>
+							</div>
+						</div>
+						<hr></hr>
+						<div class="row">
+							<h:panelGroup id="tableEventos">
+								<ui:repeat value="#{eventoUsuarioManager.listEventoPesquisa}" var="evento">
+
+									<div class="col-sm-6 col-md-4">
+										<div class="thumbnail">
+											<img src="../resources/dist/img/photo4.jpg" alt="..." />
+											<div class="caption">
+												<h3>
+													<b><i>#{evento.nome}</i></b>
+												</h3>
+												<br />
+												<p>Data de Inicio:
+													#{eventoUsuarioManager.convertDateToString(evento.dataInicio)}</p>
+												<br />
+												<p>Data de Termino:
+													#{eventoUsuarioManager.convertDateToString(evento.dataFinal)}</p>
+												<br />
+												<p>
+												<h5>
+													<b>#{evento.descricao}</b>
+												</h5>
+												</p>
+												<br />
+												<p>
+													<p:commandButton styleClass="btn btn-info"
+														value="Participar" update=":form1:tableEventos" ajax="true"
+														action="#{eventoUsuarioManager.participarEvento(evento)}"
+														rendered="#{eventoUsuarioManager.verifyParticipacao(evento)}" />
+														
+													<p:commandButton styleClass="btn btn-danger"
+														value="Cancelar Participação" update=":form1:tableEventos" ajax="true"
+														action="#{eventoUsuarioManager.cancelarParticipacaoEvento(evento)}"
+														rendered="#{!eventoUsuarioManager.verifyParticipacao(evento)}" />
+												</p>
+											</div>
+										</div>
+									</div>
+
+								</ui:repeat>
+							</h:panelGroup>
+						</div>
+					</div>
+
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">tchau</div>
+							</div>
+						</div>
+
+
+					</div>
+				</h:form>
+
+			</div>
+			<div class="box-footer">
+				Visit <a href="#">Select2 documentation</a> for more examples and
+				information about the plugin.
+			</div>
+
+		</section>
+
+	</ui:define>
+
+</ui:composition>

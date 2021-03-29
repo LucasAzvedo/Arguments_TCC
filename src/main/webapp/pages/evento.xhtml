@@ -1,0 +1,239 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Evento</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Evento</li>
+			</ol>
+		</section>
+		<h:form id="form1" enctype="multipart/form-data">
+			<section class="content">
+
+				<div class="box box-default">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Cadastro de Evento</h3>
+
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+
+									<h:form id="idCadastroGroup">
+										<div class="form-horizontal">
+											<div class="box-body">
+
+												<!-- NOME EVENTO -->
+												<div class="form-group">
+													<p:outputLabel for="idNome"
+														class="col-sm-2 form-control-prime" value="Nome do Evento" />
+
+													<div class="col-sm-7">
+														<p:inputText class="form-control" id="idNome"
+															placeholder="Nome do Evento" required="true"
+															requiredMessage="Campo Nome Obrigatório."
+															title="Nome do Evento a ser cadastrado"
+															value="#{eventoManager.dto.nome}" />
+														<p:tooltip id="toolTipFocus" for="idNome"
+															showEvent="focus" hideEvent="blur" />
+													</div>
+												</div>
+
+												<!-- DESCRICAO EVENTO -->
+												<div class="form-group">
+													<p:outputLabel for="idDesc"
+														class="col-sm-2 form-control-prime"
+														value="Descrição do Evento" />
+
+													<div class="col-sm-7">
+														<p:inputTextarea id="idDesc" rows="4" cols="50"
+															value="#{eventoManager.dto.descricao}" autoResize="true" />
+														<br />
+														<h:outputText id="display" />
+													</div>
+												</div>
+
+												<!-- 												CURSO -->
+												<div class="form-group has-feedback">
+													<p:outputLabel for="idDesc"
+														class="col-sm-2 form-control-prime" value="Curso" />
+
+													<div class="col-sm-7">
+														<h:selectOneMenu id="idCursos" styleClass="form-control"
+															required="true"
+															requiredMessage="Ao menos um curso precisa ser selecionado."
+															value="#{eventoManager.cursoSelecionado}">
+															<f:selectItem itemLabel="-- Selecione --" itemValue=""
+																noSelectionOption="" />
+															<f:selectItems var="curso" itemLabel="#{curso.nome}"
+																itemValue="#{curso.id}"
+																value="#{eventoManager.listaCursos}" />
+														</h:selectOneMenu>
+													</div>
+												</div>
+
+												<!-- DATA INICIAL EVENTO -->
+												<div class="form-group">
+
+													<p:outputLabel for="idDataInicial"
+														class="col-sm-2 form-control-prime"
+														value="Data Inicio do Evento *" />
+
+													<div class="col-sm-4">
+														<div class="input-group">
+															<div class="input-group-addon">
+																<i class="fa fa-calendar"></i>
+															</div>
+															<p:inputMask id="idDataInicial" mask="99/99/9999 99:99"
+																value="#{eventoManager.dto.dataInicio}" />
+														</div>
+
+													</div>
+												</div>
+												
+											</div>
+
+										</div>
+
+										<div class="box-footer">
+
+											<!-- BOTAO CADASTRAR EVENTO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaCadEvento" value="Cadastrar"
+												action="#{eventoManager.cadastrarEvento}"
+												rendered="#{eventoManager.edit == false}"
+												update="form1 :form:idTabelaGroup" ajax="false" />
+
+											<!-- BOTAO SALVAR UM EVENTO QUANDO EDITADO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaEditEvento" value="Salvar"
+												action="#{eventoManager.saveEventoEdit}"
+												rendered="#{eventoManager.edit == true}"
+												update="form1 :form:idTabelaGroup" ajax="false" />
+
+										</div>
+
+									</h:form>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</h:form>
+		<h:form id="form" enctype="multipart/form-data">
+			<section class="content">
+
+				<div class="box box-default">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Tabela de Evento</h3>
+
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+
+					<div class="box-body">
+
+						<div class="box-body">
+							<h:panelGroup id="idTabelaGroup">
+								<table id="tabelaEvento"
+									class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th>Nome do Evento</th>
+											<th>Descricao</th>
+											<th>Curso</th>
+											<th>Data de Inicio</th>
+											<th>Editar</th>
+											<th>Remover</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat value="#{eventoManager.listEvento}" var="evento">
+											<tr>
+												<td>#{evento.nome}</td>
+												<td>#{evento.descricao}</td>
+												<td>#{evento.numCurso.nome}</td>
+												<td>#{eventoManager.convertoCompleteTimestampToString(evento.dataInicio)}</td>
+												<td><p:commandButton icon="fa fa-edit" title="Edit"
+														process="@form idTabelaGroup" update="form1" ajax="false"
+														action="#{eventoManager.editEvent(evento)}" /></td>
+												<td><p:commandButton
+														oncomplete="PF('eventDialogDelWid').show();"
+														process="@this" icon="fa fa-remove" title="Remove"
+														ajax="true"
+														action="#{eventoManager.setSelectedEvent(evento)}">
+													</p:commandButton></td>
+
+											</tr>
+										</ui:repeat>
+									</tbody>
+
+								</table>
+							</h:panelGroup>
+						</div>
+
+						<!-- MODAL PARA EXCLUSÃO DO EVENTO -->
+						<p:dialog header="Exclusão do Evento"
+							widgetVar="eventDialogDelWid" id="eventDialogDel" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="true">
+							<p:outputPanel id="eventDetailDel" style="text-align:lefth;">
+								<div>
+									<h:outputText
+										value=" Deseja excluir o evento #{eventoManager.selectedEvent.nome}" />
+								</div>
+								<div>
+
+									<p:commandButton styleClass="btn btn-info" id="idBotaRemEven"
+										value="Sim" action="#{eventoManager.removeEvent}"
+										update="idTabelaGroup" ajax="false">
+									</p:commandButton>
+
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										value="Não" onclick="PF('eventDialogDelWid').hide();" />
+								</div>
+							</p:outputPanel>
+						</p:dialog>
+
+					</div>
+				</div>
+				<script>
+					$(function() {
+						$('#tabelaEvento').DataTable({
+							"paging" : true,
+							"lengthChange" : true,
+							"searching" : true,
+							"ordering" : true,
+							"info" : true,
+							"autoWidth" : true
+						});
+					});
+				</script>
+			</section>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

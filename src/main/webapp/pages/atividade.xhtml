@@ -1,0 +1,309 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Atividade</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Atividade</li>
+			</ol>
+		</section>
+		<section class="content">
+
+			<div class="box box-default">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Opções da Atividade</h3>
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+
+				<h:form id="form1">
+					<p:growl id="mensagens" showDetail="true" sticky="true" />
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+
+									<p:accordionPanel activeIndex="#{atividadeManager.tabindex}"
+										dynamic="false">
+										<p:tab title="Cadastro de atividade">
+
+											<h:panelGroup id="idCadastroGroup">
+
+												<div class="form-horizontal">
+													<div class="box-body">
+														<div class="form-group">
+															<p:outputLabel for="idNome"
+																class="col-sm-2 form-control-prime"
+																value="Nome da Atividade *" />
+
+															<div class="col-sm-7">
+																<p:inputText class="form-control" id="idNome"
+																	placeholder="Nome da Atividade"
+																	value="#{atividadeManager.dto.nome}" />
+															</div>
+														</div>
+
+														<div class="form-group">
+															<p:outputLabel for="idTema"
+																class="col-sm-2 form-control-prime"
+																value="Tema da Atividade" />
+
+															<div class="col-sm-7">
+																<p:inputText class="form-control" id="idTema"
+																	placeholder="Tema da Atividade"
+																	value="#{atividadeManager.dto.tema}" />
+															</div>
+														</div>
+
+														<div class="form-group">
+															<p:outputLabel for="tipoAtv"
+																class="col-sm-2 form-control-prime"
+																value="Tipo de Atividade *" />
+																
+															<div class="col-sm-7">
+																<h:selectOneMenu id="tipoAtv"
+																	value="#{atividadeManager.idTipoAtividadeCadastro}">
+																	<f:selectItem itemLabel=" -- Selecione -- " itemValue=""
+																		noSelectionOption="" />
+																	<f:selectItems var="atv" itemLabel="#{atv.nome}"
+																		itemValue="#{atv.id}"
+																		value="#{atividadeManager.listTipoAtividade}" />
+																</h:selectOneMenu>
+															</div>
+														</div>
+
+														<div class="form-group">
+															<p:outputLabel for="console"
+																class="col-sm-2 form-control-prime" 
+																value="Evento *" />
+															<div class="col-sm-7">
+															
+																<h:selectOneMenu id="console"
+																	value="#{atividadeManager.idEventoCadastro}">
+																	<f:selectItem itemLabel=" -- Selecione -- " itemValue=""
+																		noSelectionOption="" />
+																	<f:selectItems var="evento" itemLabel="#{evento.nome}"
+																		itemValue="#{evento.id}"
+																		value="#{atividadeManager.listEvento}" />
+																</h:selectOneMenu>
+															</div>
+														</div>
+														<div class="form-group">
+
+															<p:outputLabel for="idDataInicial"
+																class="col-sm-2 form-control-prime"
+																value="Data Inicio da Atividade *" />
+																
+															<div class="col-sm-4">
+																<div class="input-group">
+																	<div class="input-group-addon">
+																		<i class="fa fa-calendar"></i>
+																	</div>
+																	<p:inputMask id="idDataInicial" mask="99/99/9999"
+																		styleClass="form-control"
+																		value="#{atividadeManager.dto.dataInicio}" />
+																</div>
+
+															</div>
+														</div>
+														<div class="form-group">
+
+															<p:outputLabel for="idDataFinal"
+																class="col-sm-2 form-control-prime"
+																value="Data Final da Atividade *" />
+																
+															<div class="col-sm-4">
+																<div class="input-group">
+																	<div class="input-group-addon">
+																		<i class="fa fa-calendar"></i>
+																	</div>
+																	<p:inputMask id="idDataFinal" mask="99/99/9999"
+																		styleClass="form-control"
+																		value="#{atividadeManager.dto.dataFinal}" />
+																</div>
+															</div>
+														</div>
+
+													</div>
+
+												</div>
+
+											</h:panelGroup>
+											<div class="box-footer">
+
+												<p:commandButton styleClass="btn btn-info pull-right"
+													id="idBotaCadAtividade" value="Cadastrar Atividade"
+													action="#{atividadeManager.cadastrarAtividade}"
+													rendered="#{atividadeManager.edit eq false}"
+													process="@form" update="tabelaAtividades mensagens"
+													ajax="false" />
+
+												<p:commandButton styleClass="btn btn-info pull-right"
+													id="idBotaEditAtividade" value="Salvar"
+													action="#{atividadeManager.saveEdit}"
+													rendered="#{atividadeManager.edit eq true}"
+													update="tabelaAtividades mensagens" ajax="false" />
+
+
+												<!-- <button type="submit" class="btn btn-default">Limpar</button>
+												<button type="submit" class="btn btn-info pull-right">Cadastrar
+													Evento</button>-->
+
+											</div>
+
+										</p:tab>
+									</p:accordionPanel>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- </h:form>  -->
+
+					<div class="box-body">
+
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<h:selectOneMenu id="console" styleClass="form-control"
+										value="#{atividadeManager.selectedIdEvento}">
+										<f:selectItem itemLabel="-- Selecione --" itemValue=""
+											noSelectionOption="" />
+										<f:selectItems var="evento" itemLabel="#{evento.nome}"
+											itemValue="#{evento.id}"
+											value="#{atividadeManager.listEvento}" />
+										<p:ajax event="change" update="tabelaAtividades"
+											resetValues="true" />
+									</h:selectOneMenu>
+
+								</div>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+
+									<p:dataTable id="tabelaAtividades" var="atv"
+										paginatorPosition="bottom" emptyMessage="Sem Registros"
+										value="#{atividadeManager.listAtividade}" rows="10"
+										paginator="true"
+										paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
+										{PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+										rowsPerPageTemplate="5,10,15">
+										<f:facet name="header">
+							            	Atividades Cadastradas
+							        	</f:facet>
+										<p:column headerText="Nome da Atividade">
+											<h:outputText value="#{atv.nome}" />
+										</p:column>
+										<p:column headerText="Tema da Atividade">
+											<h:outputText value="#{atv.tema}" />
+										</p:column>
+										<p:column headerText="Data de Inicio">
+											<h:outputText value="#{atv.dataInicio}" />
+										</p:column>
+										<p:column headerText="Data de Termino">
+											<h:outputText value="#{atv.dataFinal}" />
+										</p:column>
+										<p:column style="width:60px;text-align: center">
+											<p:commandButton update=":form1:atvDetailInfo"
+												oncomplete="PF('atvDialogInfoWid').show();"
+												icon="fa fa-search" title="View" ajax="true"
+												action="#{atividadeManager.setSelectedAtividade(atv)}" />
+										</p:column>
+										<p:column style="width:60px;text-align: center">
+											<p:commandButton update="form1 " icon="fa fa-edit"
+												title="View" ajax="true"
+												action="#{atividadeManager.editAtividade(atv)}" />
+										</p:column>
+										<p:column style="width:60px;text-align: center">
+											<p:commandButton update=":form1:tabelaAtividades"
+												process="@form tabelaAtividades"
+												oncomplete="PF('atvDialogDelWid').show();"
+												icon="fa fa-remove" title="Remove" ajax="true"
+												action="#{atividadeManager.setSelectedAtividade(atv)}">
+											</p:commandButton>
+										</p:column>
+									</p:dataTable>
+
+								</div>
+							</div>
+						</div>
+
+						<p:dialog header="Informações da Atividade"
+							widgetVar="atvDialogInfoWid" id="atvDialogInfo" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="true">
+							<p:outputPanel id="atvDetailInfo" style="text-align:lefth;">
+								<p:panelGrid columns="2">
+									<f:facet name="header">
+										<h:outputText
+											value="#{atividadeManager.selectedAtividade.nome}" />
+									</f:facet>
+
+									<h:outputText value="Tema" />
+									<h:outputText
+										value="#{atividadeManager.selectedAtividade.tema}" />
+
+									<h:outputText value="Data Inicio" />
+									<h:outputText
+										value="#{atividadeManager.selectedAtividade.dataInicio}" />
+
+									<h:outputText value="Data Final" />
+									<h:outputText
+										value="#{atividadeManager.selectedAtividade.dataFinal}" />
+
+								</p:panelGrid>
+							</p:outputPanel>
+						</p:dialog>
+
+						<p:dialog header="Exclusçao do Evento" widgetVar="atvDialogDelWid"
+							id="eventDialogDel" modal="true" showEffect="fade"
+							hideEffect="fade" resizable="true">
+							<p:outputPanel id="eventDetailDel" style="text-align:lefth;">
+								<div>
+									<h:outputText
+										value=" Deseja excluir o evento #{eventoManager.selectedEvent.nome}" />
+								</div>
+								<div>
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										id="idBotaRemEven" value="Sim"
+										action="#{eventoManager.removeEvent}"
+										update="tabelaAtividades mensagens" ajax="false">
+									</p:commandButton>
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										value="Não" onclick="PF('atvDialogDelWid').hide();" />
+								</div>
+							</p:outputPanel>
+						</p:dialog>
+					</div>
+				</h:form>
+
+			</div>
+			<div class="box-footer">
+				Visit <a href="#">Select2 documentation</a> for more examples and
+				information about the plugin.
+			</div>
+			<script type="text/javascript">
+				$("#dataUm").inputmask("dd/mm/yyyy", {
+					"placeholder" : "dd/mm/yyyy"
+				});
+			</script>
+		</section>
+
+	</ui:define>
+
+</ui:composition>

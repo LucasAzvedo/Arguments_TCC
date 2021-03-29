@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<section class="content-header">
+			<h1>Noticías</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Noticías</li>
+			</ol>
+		</section>
+		<section class="content">
+
+			<div class="box box-default">
+
+				<h:form id="form1">
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<h:panelGroup id="tabelaAtividades">
+
+										<div class="form-group">
+											<p:carousel value="#{noticiaManager.listAtividade}"
+												effect="slide" headerText="Noticías em Destaque"
+												autoPlayInterval="1000" circular="true" var="atv"
+												itemStyle="text-align:center">
+												<p:panelGrid columns="2" style="width:100%;margin:5px 0px"
+													columnClasses="value,value" layout="grid"
+													styleClass="ui-panelgrid-blank">
+													<f:facet name="header">
+														<p:panel rendered="#{atv.baseFile ne null}"
+															style="border-style: none;">
+															<center>
+																<img src="data:image/jpg;base64,#{atv.baseFile}"
+																	alt="..." width="280" height="200" />
+															</center>
+														</p:panel>
+														<p:panel rendered="#{atv.baseFile eq null}"
+															style="border-style: none;">
+															<center>
+																<img src="../resources/dist/img/atividades-site.jpg"
+																	alt="..." width="280" height="200" />
+															</center>
+														</p:panel>
+													</f:facet>
+
+													<h:outputLabel value="Nome: "/>
+													<h:outputText value="#{atv.nome}" />
+
+													<h:outputLabel value="Tipo: "/>
+													<h:outputText value="#{atv.tipoAtividade.nome}" />
+													
+													<h:outputLabel value="Tema: "/>
+													<h:outputText value="#{atv.tema}" />
+
+													<h:outputLabel value="Data de Inicio: "/>
+													<h:outputText value="#{noticiaManager.convertDateToString(atv.dataInicio)}" />
+													
+													<h:outputLabel value="Data de Termino: "/>
+													<h:outputText value="#{noticiaManager.convertDateToString(atv.dataFinal)}" />
+
+												</p:panelGrid>
+
+											</p:carousel>
+										</div>
+									</h:panelGroup>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</h:form>
+
+			</div>
+
+		</section>
+
+	</ui:define>
+
+</ui:composition>

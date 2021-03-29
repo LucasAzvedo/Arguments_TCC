@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance "
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+    version="2.2">
+	
+	<application>
+	  	<message-bundle>
+	  		com.unieventos.Message
+	  	</message-bundle>
+     </application>
+     
+     <navigation-rule>
+
+        <navigation-case>
+        
+   			<from-outcome>professorEvt</from-outcome>
+
+   			<to-view-id>/pages/evento.xhtml</to-view-id>
+   		
+		</navigation-case>
+		
+		<navigation-case>
+        
+   			<from-outcome>professorNtc</from-outcome>
+
+   			<to-view-id>/pages/noticia.xhtml</to-view-id>
+   		
+		</navigation-case>
+		
+		<navigation-case>
+        
+   			<from-outcome>professorDbt</from-outcome>
+
+   			<to-view-id>/pages/debate.xhtml</to-view-id>
+   		
+		</navigation-case>
+		
+		<navigation-case>
+        
+   			<from-outcome>professorGrp</from-outcome>
+
+   			<to-view-id>/pages/grupos.xhtml</to-view-id>
+   		
+		</navigation-case>
+		
+		<navigation-case>
+        
+   			<from-outcome>professorTrb</from-outcome>
+
+   			<to-view-id>/pages/trabalho.xhtml</to-view-id>
+   		
+		</navigation-case>
+		
+		<navigation-case>
+        
+   			<from-outcome>admPerm</from-outcome>
+
+   			<to-view-id>/pages/permissoes.xhtml</to-view-id>
+   		
+		</navigation-case>
+		
+	</navigation-rule>
+     
+</faces-config>

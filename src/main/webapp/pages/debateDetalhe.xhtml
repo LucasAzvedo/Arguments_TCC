@@ -1,0 +1,121 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Detalhe do Debate</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li>Debate</li>
+				<li class="active">Detalhe do Debate</li>
+			</ol>
+		</section>
+
+		<h:form id="form1">
+			<h:panelGroup id="idGroupForm">
+				<section class="content">
+
+					<div class="box box-default">
+
+						<div class="box-header with-border">
+							<h3 class="box-title">Detalhe do Debate</h3>
+
+							<div class="box-tools pull-right">
+								<button type="button" class="btn btn-box-tool"
+									data-widget="collapse">
+									<i class="fa fa-minus"></i>
+								</button>
+							</div>
+						</div>
+
+						<div class="box-body">
+
+							<div class="col-md-12">
+								<!-- Box Comment -->
+								<div class="box box-widget">
+									<div class="box-header with-border">
+										<div class="user-block">
+											<img class="img-circle"
+												src="https://image.freepik.com/icones-gratis/silhueta-usuario-masculino_318-35708.jpg"
+												alt="User Image" /> <span class="username">#{debateDetalheManager.debate.nome}</span>
+											<span class="description">Publicado por
+												#{debateDetalheManager.debate.idUsuarioEntity.nome}&#160;#{debateDetalheManager.debate.idUsuarioEntity.sobrenome}
+												-
+												#{debateDetalheManager.convertDateToStringFull(debateDetalheManager.debate.dataCriacao)}</span>
+										</div>
+
+									</div>
+
+									<div class="box-body">
+										<p><b><span style="font-size: 14px;">Tema: </span></b><span style="font-size: 15px;">#{debateDetalheManager.debate.tema}</span></p>
+										<p><b><span style="font-size: 14px;">Data Inicio: </span></b><span style="font-size: 15px;">#{debateDetalheManager.convertDateToStringFull(debateDetalheManager.debate.dataAbertura)}</span></p>
+										<p><b><span style="font-size: 14px;">Data Termino: </span></b><span style="font-size: 15px;">#{debateDetalheManager.convertDateToStringFull(debateDetalheManager.debate.dataFechamento)}</span></p>
+										<p><b><span style="font-size: 18px;">Assunto: </span></b><span style="font-size: 22px;">#{debateDetalheManager.debate.assunto}</span></p>
+										<span class="pull-right text-muted">#{debateDetalheManager.qtdUsuarios} Usuários ativos - #{debateDetalheManager.qtdComentarios} Comentário(s)</span>
+									</div>
+
+									<div class="box-footer box-comments">
+
+										<ui:repeat value="#{debateDetalheManager.listaDebate}"
+											var="debate">
+
+											<div class="box-comment">
+
+												<i class="fa fa-comment fa-3x" style="position: absolute;"></i>
+
+												<div class="comment-text" style="padding-left: 10px;">
+													<span class="username" style="color: blue;"> <b>#{debate.idUsuarioEntity.nome}</b><span
+														class="text-muted pull-right">8:03 PM Today</span>
+													</span> #{debate.comentario}
+												</div>
+
+											</div>
+										</ui:repeat>
+
+									</div>
+
+									<div class="box-footer">
+										<div class="row">
+											<div class="col-md-1">
+												<div class="user-block">
+													<img class="img-circle " style="width: 30px; height: 30px;"
+														src="https://image.freepik.com/icones-gratis/silhueta-usuario-masculino_318-35708.jpg"
+														alt="User Image" />
+
+												</div>
+											</div>
+											<div class="col-md-11" style="margin: auto;">
+												<div class="img-push">
+
+													<p:inputText class="form-control input-sm"
+														id="idComentario" binding="#{idComentario}"
+														placeholder="Comente e aperte enter"
+														onkeypress="if (event.keyCode == 13) { $('.botao-comentar').click(); return false; }">
+
+														<p style="display: none">
+															<p:commandLink styleClass="botao-comentar" id="btnComentar"
+																value="" update="@form" resetValues="true"
+																action="#{debateDetalheManager.comentarDetalhe(idComentario.value)}"></p:commandLink>
+														</p>
+
+													</p:inputText>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</section>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,232 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Cadastro de Trabalhos</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Trabalhos</li>
+			</ol>
+		</section>
+		<h:form id="form1" enctype="multipart/form-data">
+			<section class="content">
+
+				<div class="box box-default">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Cadastro de Trabalhos</h3>
+
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+
+									<h:form id="idCadastroGroup">
+										<div class="form-horizontal">
+											<div class="box-body">
+
+												<!-- NOME TRABALHO -->
+												<div class="form-group">
+													<p:outputLabel for="idNome"
+														class="col-sm-2 form-control-prime" value="Nome do Trabalho" />
+
+													<div class="col-sm-7">
+														<p:inputText class="form-control" id="idNome"
+															placeholder="Nome do Trabalho" required="true"
+															requiredMessage="Campo Nome Obrigatório."
+															title="Nome do Trabalho a ser cadastrado"
+															value="#{trabalhoManager.dto.nome}" />
+														<p:tooltip id="toolTipFocus" for="idNome"
+															showEvent="focus" hideEvent="blur" />
+													</div>
+												</div>
+
+												<!-- DESCRICAO TRABALHO -->
+												<div class="form-group">
+													<p:outputLabel for="idDesc"
+														class="col-sm-2 form-control-prime"
+														value="Descrição do Trabalho" />
+
+													<div class="col-sm-7">
+														<p:inputTextarea id="idDesc" rows="4" cols="50"
+															value="#{trabalhoManager.dto.descricao}" autoResize="true" />
+														<br />
+														<h:outputText id="display" />
+													</div>
+												</div>
+
+												<!-- 												CURSO -->
+												<div class="form-group has-feedback">
+													<p:outputLabel for="idDesc"
+														class="col-sm-2 form-control-prime" value="Curso" />
+
+													<div class="col-sm-7">
+														<h:selectOneMenu id="idCursos" styleClass="form-control"
+															required="true"
+															requiredMessage="Ao menos um curso precisa ser selecionado."
+															value="#{trabalhoManager.cursoSelecionado}">
+															<f:selectItem itemLabel="-- Selecione --" itemValue=""
+																noSelectionOption="" />
+															<f:selectItems var="curso" itemLabel="#{curso.nome}"
+																itemValue="#{curso.id}"
+																value="#{trabalhoManager.listaCursos}" />
+														</h:selectOneMenu>
+													</div>
+												</div>
+												
+												<!-- UPLOAD DE ARQUIVOS -->
+												<div class="form-group">
+															<p:outputLabel for="file"
+																class="col-sm-2 form-control-prime"
+																value="Upload do Trabalho" />
+															<div class="col-sm-7">
+																<p:fileUpload id="file" value="#{trabalhoManager.file}"
+																	mode="simple" skinSimple="true" required="true"
+																	label="Escolher Arquivo" sizeLimit="2097152"
+																	allowTypes="/(\.|\/)(pdf)$/"
+																	requiredMessage="Faça o upload do arquivo" />
+															</div>
+														</div>
+												
+												
+
+											</div>
+
+										</div>
+
+										<div class="box-footer">
+
+											<!-- BOTAO CADASTRAR TRABALHO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaCadTrabalho" value="Cadastrar"
+												action="#{trabalhoManager.cadastrarTrabalho}"												
+												ajax="false" />
+												
+											<!-- BOTAO SALVAR UM EVENTO QUANDO EDITADO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaEditTrabalho" value="Salvar"
+												action="#{trabalhoManager.saveTrabalhoEdit}"
+												rendered="#{trabalhoManager.edit == true}"
+												update="form1 :form:idTabelaGroup" ajax="false" />
+
+
+
+										</div>
+
+									</h:form>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</section>
+			</h:form>
+			<h:form id="form" enctype="multipart/form-data">
+			<section class="content">
+
+				<div class="box box-default">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Tabela de Trabalhos</h3>
+
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+
+					<div class="box-body">
+
+						<div class="box-body">
+							<h:panelGroup id="idTabelaGroup">
+								<table id="tabelaEvento"
+									class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th>Nome do Trabalho</th>
+											<th>Descricao</th>
+											<th>Curso</th>
+											<th>Nome Arquivo</th>											
+											<th>Remover</th>
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat value="#{trabalhoManager.listTrabalho}" var="trabalho">
+											<tr>
+												<td>#{trabalho.nome}</td>
+												<td>#{trabalho.descricao}</td>												
+												<td>#{trabalho.numCurso.nome}</td>
+												<td>#{trabalho.nomearq}</td>												
+												<td><p:commandButton
+														oncomplete="PF('eventDialogDelWid').show();"
+														process="@this" icon="fa fa-remove" title="Remove"
+														ajax="true"
+														action="#{trabalhoManager.setSelectedTrabalho(trabalho)}">
+													</p:commandButton></td>
+
+											</tr>
+										</ui:repeat>
+									</tbody>
+
+								</table>
+							</h:panelGroup>
+						</div>
+
+						<!-- MODAL PARA EXCLUSÃO DO EVENTO -->
+						<p:dialog header="Exclusão do Trabalho"
+							widgetVar="eventDialogDelWid" id="eventDialogDel" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="true">
+							<p:outputPanel id="eventDetailDel" style="text-align:lefth;">
+								<div>
+									<h:outputText
+										value=" Deseja excluir o Trabalho #{trabalhoManager.selectedTrabalho.nome}" />
+								</div>
+								<div>
+
+									<p:commandButton styleClass="btn btn-info" id="idBotaRemTrab"
+										value="Sim" action="#{trabalhoManager.removeTrabalho}"
+										update="idTabelaGroup" ajax="false">
+									</p:commandButton>
+
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										value="Não" onclick="PF('eventDialogDelWid').hide();" />
+								</div>
+							</p:outputPanel>
+						</p:dialog>
+
+					</div>
+				</div>
+				<script>
+					$(function() {
+						$('#tabelaEvento').DataTable({
+							"paging" : true,
+							"lengthChange" : true,
+							"searching" : true,
+							"ordering" : true,
+							"info" : true,
+							"autoWidth" : true
+						});
+					});
+				</script>
+			</section>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

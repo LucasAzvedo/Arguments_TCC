@@ -1,0 +1,55 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+        http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="arguments">
+
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<jta-data-source>java:/argumentsDS</jta-data-source>
+
+		<!-- <class>br.com.qlav.entity.UsuarioEntity</class> -->
+		<!-- <class>br.com.qlav.entity.UsuarioAcessoEntity</class> -->
+		<!-- <class>br.com.qlav.entity.EnderecoEntity</class> -->
+		<!-- <class>br.com.qlav.entity.FormaLavagemEntity</class> -->
+		<!-- <class>br.com.qlav.entity.TipoRoupaEntity</class> -->
+		<!-- <class>br.com.qlav.entity.RoupaEntity</class> -->
+		<!-- <class>br.com.qlav.entity.DuvidasFrequentesEntity</class> -->
+		<!-- <class>br.com.qlav.entity.EquipamentoEntity</class> -->
+		<!-- <class>br.com.qlav.entity.QualificacaoEntity</class> -->
+		<!-- <class>br.com.qlav.entity.FileEntity</class> -->
+		<!-- <class>br.com.qlav.entity.CestoEntity</class> -->
+		<!-- <class>br.com.qlav.entity.RoupaCestoEntity</class> -->
+		<!-- <class>br.com.qlav.entity.AvaliacoesEntity</class> -->
+
+<!-- 		<class>br.com.arguments.entity.teste</class> -->
+
+		<class>br.com.arguments.entity.LoginEntity</class>
+		<class>br.com.arguments.entity.TipoUsuarioEntity</class>
+		<class>br.com.arguments.entity.UsuarioEntity</class>
+		<class>br.com.arguments.entity.InstituicaoEntity</class>
+		<class>br.com.arguments.entity.InstituicaoCursosEntity</class>
+		<class>br.com.arguments.entity.CursosEntity</class>
+		<class>br.com.arguments.entity.DebateEntity</class>
+		<class>br.com.arguments.entity.DebateCursoEntity</class>
+		<class>br.com.arguments.entity.TrabalhoEntity</class>
+		<class>br.com.arguments.entity.EventoEntity</class>
+		<class>br.com.arguments.entity.TimeLineEntity</class>
+		<class>br.com.arguments.entity.TipoConteudoEventoEntity</class>
+		<class>br.com.arguments.entity.GruposUsuarioEntity</class>
+		<class>br.com.arguments.entity.TipoConteudoGrupoEntity</class>
+		<class>br.com.arguments.entity.TrabalhoUsuarioEntity</class>
+		<class>br.com.arguments.entity.TipoConteudoTrabalhoEntity</class>
+		
+		<properties>
+
+			<!-- Configuracoes especificas do Hibernate -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.show_sql" value="true" />
+
+		</properties>
+	</persistence-unit>
+</persistence>

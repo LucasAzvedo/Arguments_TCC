@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14912572309710" configfile="/tccshow/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="pages/evento.xhtml" x="338" y="178" id="pf14912573677016" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14912584656587" path="/pages/evento.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="562" id="pf14912584656588" outlinks="pf14912584656587 pf14912584656589 pf149125846565810 pf14942671726320 pf14942671906102 pf14942674409664" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/noticia.xhtml" x="338" y="562" id="pf149125846565811" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf14912584656589" path="/pages/noticia.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/debate.xhtml" x="338" y="946" id="pf149125846565812" referenceLink="//@navigationRule.0/@navigationCase.4/@toViewId|" inlinks="pf149125846565810" path="/pages/debate.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/grupos.xhtml" id="pf14942671726321" referenceLink="//@navigationRule.0/@navigationCase.3/@toViewId|" inlinks="pf14942671726320" path="/pages/grupos.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/trabalho.xhtml" id="pf14942671906113" referenceLink="//@navigationRule.0/@navigationCase.5/@toViewId|" inlinks="pf14942671906102" path="/pages/trabalho.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/permissoes.xhtml" id="pf14942674409665" referenceLink="//@navigationRule.0/@navigationCase.5/@toViewId|" inlinks="pf14942674409664" path="/pages/permissoes.xhtml"/>
+  <links id="pf14912584656587" target="pf14912573677016" source="pf14912584656588"/>
+  <links id="pf14912584656589" target="pf149125846565811" source="pf14912584656588"/>
+  <links id="pf149125846565810" target="pf149125846565812" source="pf14912584656588"/>
+  <links id="pf14942671726320" target="pf14942671726321" source="pf14912584656588"/>
+  <links id="pf14942671906102" target="pf14942671906113" source="pf14912584656588"/>
+  <links id="pf14942674409664" target="pf14942674409665" source="pf14912584656588"/>
+</pageflow:Pageflow>

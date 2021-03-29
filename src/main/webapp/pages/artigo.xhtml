@@ -1,0 +1,270 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Artigo</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Artigo</li>
+			</ol>
+		</section>
+
+		<section class="content">
+
+			<div class="box box-default">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Criar Artigo</h3>
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+				<h:form id="form" enctype="multipart/form-data">
+					<p:growl id="mensagens" showDetail="true" sticky="true" />
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+
+									<p:accordionPanel activeIndex="-1" dynamic="false">
+										<p:tab title="Criar Artigo">
+
+											<h:panelGroup id="idCadastroGroup">
+
+												<div class="form-horizontal">
+													<div class="box-body">
+														<div class="form-group">
+															<p:outputLabel for="idNome"
+																class="col-sm-2 form-control-prime"
+																value="Título do Artigo" />
+
+															<div class="col-sm-7">
+																<p:inputText class="form-control" id="idNome"
+																	placeholder="Título do Artigo" required="true"
+																	requiredMessage="Campo Nome Obrigatório."
+																	value="#{artigoManager.dto.nome}" />
+
+															</div>
+														</div>
+													</div>
+												</div>
+
+											</h:panelGroup>
+
+
+											<h:panelGroup>
+
+												<div class="form-group">
+													<div class="form-group">
+														<p:outputLabel for="idNome"
+															class="col-sm-2 form-control-prime" value=" Área " />
+
+													</div>
+													<div class="col-sm-4">
+														<h:selectOneMenu id="menu" label="CURSO" filter="true"
+															filterMatchMode="startsWith"
+															value="#{artigoManager.selectedarea}"
+															style="width:183%;height:30px;">
+															<f:selectItem itemLabel="Selecione..."
+																noSelectionOption="" itemValue="" />
+															<f:selectItems var="area" itemLabel="#{area.nome}"
+																itemValue="#{area.id}" value="#{artigoManager.area}" />
+														</h:selectOneMenu>
+
+													</div>
+												</div>
+
+											</h:panelGroup>
+
+											<br></br>
+											<br></br>
+											<br></br>
+											<br></br>
+
+											<h:panelGroup>
+
+												<div class="form-group">
+													<div class="form-group">
+														<p:outputLabel for="idNome"
+															class="col-sm-2 form-control-prime" value="Classificação" />
+
+													</div>
+													<div class="col-sm-4">
+														<h:selectOneMenu id="menuobj" label="OBJE" filter="true"
+															filterMatchMode="startsWith"
+															value="#{artigoManager.selectedclassif}"
+															style="width:183%;height:30px;">
+															<f:selectItem itemLabel="Selecione..."
+																noSelectionOption="" itemValue="" />
+															<f:selectItems var="classif" itemLabel="#{classif.nome}"
+																itemValue="#{classif.id}"
+																value="#{artigoManager.classif}" />
+														</h:selectOneMenu>
+
+													</div>
+												</div>
+
+											</h:panelGroup>
+
+											<br></br>
+											<br></br>
+											<br></br>
+											<br></br>
+
+											<h:panelGrid width="100%" style="text-align:center">
+												<h3 Rstyle="margin-top: 0"></h3>
+												<p:inputTextarea rows="10" cols="50" queryDelay="750"
+													minQueryLength="4" required="true" maxlength="70"
+													requiredMessage="Campo Nome Obrigatório."
+													placeholder="Coloque aqui sua descrição"
+													counterTemplate="{0} Quantidade restante."
+													autoResize="false" value="#{artigoManager.dto.descricao}"
+													counter="display" />
+												<h:outputText id="display" />
+											</h:panelGrid>
+											<h:panelGrid width="100%" style="text-align:center">
+												<div class="box-footer">
+													<p:fileUpload id="file" value="#{artigoManager.file}"
+														mode="simple" skinSimple="true" required="true"
+														label="Escolher Arquivo" sizeLimit="2097152"
+														allowTypes="/(\.|\/)(pdf)$/"
+														requiredMessage="Faça o upload do arquivo" />
+
+													<p:growl id="messages" showDetail="true" />
+
+													<p:commandButton value="Salvar"
+														process="@this file" ajax="false"
+														actionListener="#{artigoManager.CriarArtigo}" />
+
+												</div>
+											</h:panelGrid>
+										</p:tab>
+									</p:accordionPanel>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="box">
+						<div class="box-header">
+							<h3 class="box-title">Data Table With Full Features</h3>
+						</div>
+						<!-- /.box-header -->
+						<div class="box-body">
+							<table id="tabelaArtigo"
+								class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th>Nome do Artigo</th>
+										<th>Descricao</th>
+										<th><center>Status</center></th>
+										<th><center>Visualizar</center></th>
+
+									</tr>
+								</thead>
+								<tbody>
+									<ui:repeat value="#{artigoManager.listArtigo}" var="artigo">
+										<tr>
+											<td>#{artigo.nome}</td>
+											<td>#{artigo.descricao}</td>
+											<td>
+												<center>
+													<h4>
+														<p:outputLabel rendered="#{artigo.status eq '1'}">
+															<span class="label label-success">Aprovado</span>
+														</p:outputLabel>
+
+														<p:outputLabel rendered="#{artigo.status eq '2'}">
+															<span class="label label-warning">Pendente</span>
+														</p:outputLabel>
+
+														<p:outputLabel rendered="#{artigo.status eq '3'}">
+															<span class="label label-danger">Reprovado</span>
+														</p:outputLabel>
+													</h4>
+												</center>
+											</td>
+											<td>
+												<center>
+													<p:commandButton styleClass="btn btn-primary"
+														update=":form:artigoDetailInfo"
+														oncomplete="PF('artigoDialogInfoWid').show();"
+														icon="fa fa-search" title="Search" ajax="true"
+														action="#{artigoManager.setSelectedArtigo(artigo)}">
+													</p:commandButton>
+												</center>
+											</td>
+
+										</tr>
+									</ui:repeat>
+								</tbody>
+
+								<tfoot>
+									<tr>
+										<th>Nome do Artigo</th>
+										<th>Descricao</th>
+										<th><center>Status</center></th>
+										<th><center>Visualizar</center></th>
+
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+
+
+						<!-- MODAL PARA VISUALIZAR ARTIGO -->
+						<p:dialog header="Informações do Artigo"
+							widgetVar="artigoDialogInfoWid" id="artigoDialogInfo"
+							modal="true" width="300" height="200" showEffect="fade"
+							hideEffect="fade" resizable="false">
+							<p:outputPanel id="artigoDetailInfo" style="text-align:lefth;">
+								<p:panelGrid columns="2">
+									<f:facet name="header">
+										<h:outputText value="#{artigoManager.selectedArtigo.nome}" />
+									</f:facet>
+
+									<h:outputText value="Data Inicio" />
+									<h:outputText value="#{artigoManager.selectedArtigo.descricao}" />
+
+									<h:outputText value="Data Termino" />
+									<h:outputText value="#{artigoManager.selectedArtigo.status}" />
+
+								</p:panelGrid>
+							</p:outputPanel>
+						</p:dialog>
+
+
+
+
+					</div>
+				</h:form>
+			</div>
+			<script>
+				$(function() {
+					$('#tabelaArtigo').DataTable({
+						"paging" : true,
+						"lengthChange" : true,
+						"searching" : true,
+						"ordering" : true,
+						"info" : true,
+						"autoWidth" : true
+					});
+				});
+			</script>
+		</section>
+	</ui:define>
+
+</ui:composition>
+
+
+

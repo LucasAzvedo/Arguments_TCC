@@ -1,0 +1,332 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Grupos</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Grupos</li>
+			</ol>
+		</section>
+		<h:form id="form1" enctype="multipart/form-data">
+			<section class="content">
+
+				<div class="box box-default">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Cadastro de Grupos</h3>
+
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+
+									<h:form id="idCadastroGroup">
+										<div class="form-horizontal">
+											<div class="box-body">
+
+												<!-- NOME EVENTO -->
+												<div class="form-group">
+													<p:outputLabel for="idNome"
+														class="col-sm-2 form-control-prime" value="Nome do Grupo" />
+
+													<div class="col-sm-7">
+														<p:inputText class="form-control" id="idNome"
+															placeholder="Nome do Grupo" required="true"
+															requiredMessage="Campo Nome Obrigatório."
+															title="Nome do Grupo a ser cadastrado"
+															value="#{gruposManager.gruposDTO.nomeGrupo}" />
+														<p:tooltip id="toolTipFocus" for="idNome"
+															showEvent="focus" hideEvent="blur" />
+													</div>
+												</div>
+
+												<!-- DESCRICAO EVENTO -->
+												<div class="form-group">
+													<p:outputLabel for="idDesc"
+														class="col-sm-2 form-control-prime"
+														value="Descrição do Evento" />
+
+													<div class="col-sm-7">
+														<p:inputTextarea id="idDesc" rows="4" cols="50"
+															value="#{gruposManager.gruposDTO.descricao}"
+															autoResize="true" />
+														<br />
+														<h:outputText id="display" />
+													</div>
+												</div>
+
+												<div class="form-group">
+
+													<p:outputLabel class="col-sm-2 form-control-prime"
+														value="Tipo de Grupo(s) *" />
+
+													<div class="col-sm-4">
+														<h:panelGrid columns="2" style="margin-bottom:10px"
+															cellpadding="5">
+															<p:selectOneButton style="border-radius: 3px;"
+																value="#{gruposManager.gruposDTO.tipoGrupo}">
+																<f:selectItem itemLabel="Público" itemValue="1" />
+																<f:selectItem itemLabel="Privado" itemValue="2" />
+																<p:ajax event="change" update="lsCursos lsInst lsAlunos"
+																	listener="#{gruposManager.buscaCursosInstituicao()}"
+																	resetValues="true" />
+															</p:selectOneButton>
+
+														</h:panelGrid>
+													</div>
+												</div>
+
+												<!-- 												CURSO -->
+												<h:panelGroup id="lsCursos">
+													<h:panelGroup
+														rendered="#{gruposManager.gruposDTO.tipoGrupo eq 2}">
+														<div class="form-group has-feedback">
+															<p:outputLabel for="idDesc"
+																class="col-sm-2 form-control-prime" value="Curso" />
+
+															<div class="col-sm-7">
+																<h:selectOneMenu id="idCursos" styleClass="form-control"
+																	required="true"
+																	requiredMessage="Ao menos um curso precisa ser selecionado."
+																	value="#{gruposManager.cursoSelecionado}">
+																	<f:selectItem itemLabel="-- Selecione --" itemValue="0" />
+																	<f:selectItems var="curso" itemLabel="#{curso.nome}"
+																		itemValue="#{curso.id}"
+																		value="#{gruposManager.listaCursos}" />
+																	<p:ajax event="change" update="lsInst lsAlunos"
+																		listener="#{gruposManager.buscaInstituicaoCursos()}"
+																		 />
+																</h:selectOneMenu>
+															</div>
+														</div>
+													</h:panelGroup>
+												</h:panelGroup>
+
+												<!-- 												INSTITUICAO -->
+												<h:panelGroup id="lsInst">
+													<h:panelGroup
+														rendered="#{gruposManager.cursoSelecionado ne null}">
+														<div class="form-group has-feedback">
+															<p:outputLabel for="idDesc"
+																class="col-sm-2 form-control-prime" value="Instituição" />
+
+															<div class="col-sm-7">
+																<h:selectOneMenu id="idInstituicao"
+																	styleClass="form-control" required="true"
+																	requiredMessage="Ao menos um curso precisa ser selecionado."
+																	value="#{gruposManager.instituicaoSelecionado}">
+																	<f:selectItem itemLabel="-- TODAS --" itemValue="0"
+																		noSelectionOption="" />
+																	<f:selectItems var="inst" itemLabel="#{inst.nome}"
+																		itemValue="#{inst.id}"
+																		value="#{gruposManager.listaInstituicao}" />
+																	<p:ajax event="change" update="lsAlunos"
+																		listener="#{gruposManager.buscaAlunos()}"
+																		resetValues="true" />
+																</h:selectOneMenu>
+															</div>
+														</div>
+													</h:panelGroup>
+												</h:panelGroup>
+
+												<!-- 												ALUNOS -->
+												<h:panelGroup id="lsAlunos">
+													<h:panelGroup
+														rendered="#{gruposManager.instituicaoSelecionado ne null or gruposManager.cursoSelecionado ne null}">
+
+														<div class="form-group">
+
+															<p:outputLabel class="col-sm-2 form-control-prime"
+																value="Aluno(s) " />
+
+															<div class="col-sm-4">
+
+																<p:selectManyMenu id="advanced" scrollHeight="130" label="teste" tabindex="-1"
+																	caseSensitive="true" style="width: 200px; height: 170px;"
+																	value="#{gruposManager.listaAlunosSelecionados}"
+																	var="t" filter="true"
+																	converter="usuarioConverter" filterMatchMode="contains"
+																	showCheckbox="true">
+																	<f:selectItems value="#{gruposManager.listaAlunos}"
+																		var="aluno" itemLabel="#{aluno.nome}" id="items"
+																		itemValue="#{aluno}" />
+
+																	<p:column>
+																		<h:outputText value="#{t.nome}&#160;#{t.sobrenome}" />
+																	</p:column>
+																</p:selectManyMenu>
+
+															</div>
+
+														</div>
+
+													</h:panelGroup>
+												</h:panelGroup>
+
+
+												<div class="form-group">
+
+													<p:outputLabel class="col-sm-2 form-control-prime"
+														value="Número maximo de membros " />
+
+													<div class="col-sm-4">
+														<h:panelGrid columns="1" style="margin-bottom: 10px">
+															<p:inputText id="txt1"
+																value="#{gruposManager.gruposDTO.qtdMaximaMembros}" />
+															<p:slider for="txt1" />
+														</h:panelGrid>
+													</div>
+												</div>
+
+											</div>
+
+										</div>
+
+										<div class="box-footer">
+
+											<!-- BOTAO CADASTRAR EVENTO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaCadEvento" value="Cadastrar" process="@form"
+												action="#{gruposManager.cadastrarGrupos}"
+												rendered="#{gruposManager.edit == false}"
+												update="form1 form:idTabelaGroup" ajax="false" />
+
+											<!-- BOTAO SALVAR UM EVENTO QUANDO EDITADO -->
+											<p:commandButton styleClass="btn btn-info pull-right"
+												id="idBotaEditEvento" value="Salvar"
+												action="#{eventoManager.saveEventoEdit}"
+												rendered="#{eventoManager.edit == true}"
+												update="form1 form:idTabelaGroup" ajax="false" />
+
+										</div>
+
+									</h:form>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</h:form>
+		<h:form id="form" enctype="multipart/form-data">
+			<section class="content">
+
+				<div class="box box-default">
+
+					<div class="box-header with-border">
+						<h3 class="box-title">Tabela de Evento</h3>
+
+						<div class="box-tools pull-right">
+							<button type="button" class="btn btn-box-tool"
+								data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+
+					<div class="box-body">
+
+						<div class="box-body">
+							<h:panelGroup id="idTabelaGroup">
+								<table id="tabelaEvento"
+									class="table table-bordered table-striped">
+									<thead>
+										<tr>
+											<th>Nome do Grupo</th>
+											<th>Descrição do Grupo</th>
+											<th>Tipo de Grupo</th>
+											<th>Quantidade Membros Máximo</th>
+											<th>Quantidade Membros</th>
+											<th>Curso</th>
+											<th>Instituição</th>
+										</tr>
+									</thead>
+									<tbody>
+										<ui:repeat value="#{gruposManager.listaGrupos}" var="grupos">
+											<tr>
+												<td>#{grupos.nome}</td>
+												<td>#{grupos.descricao}</td>
+												<td><h:outputText rendered="#{grupos.tipoGrupo == 1}" value="Público"></h:outputText>
+													<h:outputText rendered="#{grupos.tipoGrupo == 2}" value="Privado"></h:outputText>
+												</td>
+												<td>#{grupos.qtdMaximaMembros}</td>
+												<td>#{gruposManager.qtdMembros(grupos.id)}</td>
+												<td><h:outputText rendered="#{grupos.tipoGrupo == 1}" value="TODOS"></h:outputText>
+													<h:outputText rendered="#{grupos.tipoGrupo == 2}" value="#{grupos.curso.nome}"></h:outputText>
+												</td>
+												<td><h:outputText rendered="#{grupos.tipoGrupo == 1}" value="TODOS"></h:outputText>
+													<h:outputText rendered="#{grupos.tipoGrupo == 2 and grupos.instituicao.nome == null}" value="TODOS"></h:outputText>
+													<h:outputText rendered="#{grupos.tipoGrupo == 2}" value="#{grupos.instituicao.nome}"></h:outputText>
+												</td>
+												<td><p:commandButton
+														oncomplete="PF('eventDialogDelWid').show();"
+														process="@this" icon="fa fa-remove" title="Remove"
+														ajax="true"
+														action="#{gruposManager.setSelectGrupos(grupos)}">
+													</p:commandButton></td>
+
+											</tr>
+										</ui:repeat>
+									</tbody>
+
+								</table>
+							</h:panelGroup>
+						</div>
+
+						<!-- MODAL PARA EXCLUSÃO DO EVENTO -->
+						<p:dialog header="Exclusão do Grupo"
+							widgetVar="eventDialogDelWid" id="eventDialogDel" modal="true"
+							showEffect="fade" hideEffect="fade" resizable="true">
+							<p:outputPanel id="eventDetailDel" style="text-align:lefth;">
+								<div>
+									<h:outputText
+										value=" Deseja excluir o Grupo #{gruposManager.selectGrupos.nome}" />
+								</div>
+								<div>
+
+									<p:commandButton styleClass="btn btn-info" id="idBotaRemEven"
+										value="Sim" action="#{gruposManager.removeGrupos}"
+										update="idTabelaGroup" ajax="false">
+									</p:commandButton>
+
+									<p:commandButton styleClass="btn btn-info pull-lefth"
+										value="Não" onclick="PF('eventDialogDelWid').hide();" />
+								</div>
+							</p:outputPanel>
+						</p:dialog>
+
+					</div>
+				</div>
+				<script>
+					$(function() {
+						$('#tabelaEvento').DataTable({
+							"paging" : true,
+							"lengthChange" : true,
+							"searching" : true,
+							"ordering" : true,
+							"info" : true,
+							"autoWidth" : true
+						});
+					});
+				</script>
+			</section>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

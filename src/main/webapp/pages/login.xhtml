@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="resource.xhtml">
+	<ui:define name="main">
+		<h:body class="hold-transition login-page body-template">
+			<div class="login-box">
+				<div class="login-logo">
+					<a href="#"><i class="fa fa-coffee"></i> <b>Arguments</b></a>
+				</div>
+				<!-- /.login-logo -->
+				<div class="login-box-body">
+					<p class="login-box-msg">Login</p>
+
+					<h:form action="#" method="post">
+						<div class="form-group has-feedback">
+							<p:inputText id="idLogin" class="form-control"
+								value="#{loginManager.login}" placeholder="E-mail ou RA" required="true" requiredMessage="Campo Obrigatório." />
+							<span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+						</div>
+						<div class="form-group has-feedback">
+							<p:password id="idSenha" class="form-control"
+								value="#{loginManager.senha}" placeholder="Senha *" required="true" requiredMessage="Senha Obrigatória." />
+							<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+						</div>
+						<div class="row">
+							<div class="col-xs-8">
+								<div class="checkbox icheck" style="margin-left: 25px;">
+									<label> <input type="checkbox" /> Lembrar
+									</label>
+								</div>
+							</div>
+							<!-- /.col -->
+							<div class="col-xs-4">
+								<p:commandButton styleClass="btn btn-primary btn-block btn-flat"
+									id="idBotaLogin" value="Login"
+									action="#{loginManager.autentica()}" update="mensagens"
+									ajax="false" />
+							</div>
+							<!-- /.col -->
+						</div>
+						<br />
+						<a href="register.xhtml" class="text-center">Cadastre-se Aqui <i class="fa fa-users"></i></a>
+
+					</h:form>
+
+				</div>
+				<!-- /.login-box-body -->
+			</div>
+			<!-- /.login-box -->
+
+		</h:body>
+	</ui:define>
+	<script>
+		$(function() {
+			$('input').iCheck({
+				checkboxClass : 'icheckbox_square-blue',
+				radioClass : 'iradio_square-blue',
+				increaseArea : '30%' // optional
+			});
+		});
+	</script>
+</ui:composition>

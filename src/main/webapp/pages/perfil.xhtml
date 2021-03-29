@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Perfil</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Perfil</li>
+			</ol>
+		</section>
+		<section class="content">
+
+			<div class="box box-default">
+
+				<div class="box-header with-border">
+
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+
+				<h:form id="form1" enctype="multipart/form-data">
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+
+
+
+
+									<p:panel id="perfil" header="Alterar Perfil"
+										style="margin-bottom:20px"
+										width="320" height="205">
+										<h:panelGrid columns="1" cellpadding="10">
+
+<!-- 											IMAGEM DEFAULT -->
+<!-- 											<p:panel id="editarimg1" -->
+<!-- 												rendered="#{perfilManager.dto.baseFile eq null}"> -->
+<!-- 												<p:column> -->
+
+<!-- 													<img id="imgns" src="../resources/dist/img/defalt.png" -->
+<!-- 														alt="..." width="250" height="185" -->
+<!-- 														title="A imagem só será alterada em todo o sistema após reiniciar a sessão" /> -->
+<!-- 													<p:tooltip id="toolTipFocus1" for="editarimg1" -->
+<!-- 														showEvent="focus" hideEvent="blur" /> -->
+
+<!-- 													<br></br> -->
+<!-- 												</p:column> -->
+<!-- 											</p:panel> -->
+
+<!-- 											IMAGEM DO USUARIO -->
+<!-- 											<p:panel id="editarimg" -->
+<!-- 												rendered="#{perfilManager.dto.baseFile ne null}"> -->
+<!-- 												<p:column> -->
+
+<!-- 													<img id="imgn" -->
+<!-- 														src="data:image/jpg;base64,#{perfilManager.dto.baseFile}" -->
+<!-- 														alt="..." width="250" height="185" -->
+<!-- 														title="A imagem só será alterada em todo o sistema após reiniciar a sessão" /> -->
+<!-- 													<p:tooltip id="toolTipFocus" for="editarimg" -->
+<!-- 														showEvent="focus" hideEvent="blur" /> -->
+
+<!-- 													<br></br> -->
+<!-- 												</p:column> -->
+<!-- 											</p:panel> -->
+
+											<!-- 											UPLOAD DE IMAGEM DO USUARIO -->
+<!-- 											<p:column> -->
+<!-- 											<br/> -->
+<!-- 											<center> -->
+											
+<!-- 												<p:fileUpload id="file" mode="simple" skinSimple="true" -->
+<!-- 													required="false" label="Alterar iamgem" sizeLimit="2097152" -->
+<!-- 													value="#{perfilManager.file}" -->
+<!-- 													requiredMessage="Faça o upload do arquivo" /> -->
+<!-- 											</center>	 -->
+<!-- 											</p:column> -->
+					
+
+
+											<br></br>
+											<br></br>
+											<h:outputLabel for="nome" value="NOME:" style="width:183%" />
+											<p:inplace id="nome" editor="true">
+												<p:inputText value="#{perfilManager.dto.nome}"
+													required="true" label="text" />
+											</p:inplace>
+											<br></br>
+											<h:outputLabel for="sobrenome" value="SOBRENOME:"
+												style="width:183%" />
+											<p:inplace id="sobrenome" editor="true">
+												<p:inputText value="#{perfilManager.dto.sobrenome}"
+													required="true" label="text" />
+											</p:inplace>
+
+											<br></br>
+											<h:outputLabel for="email" value="E-MAIL" style="width:183%" />
+											<p:inplace id="email" editor="true">
+												<p:inputText value="#{perfilManager.dto.email}"
+													required="true" label="text" />
+											</p:inplace>
+
+											<h:panelGroup rendered="#{perfilManager.dto.ra ne null}">
+												<br></br>
+												<p:outputLabel value="RA" />
+												<p:outputLabel style="width:183%"
+													value="#{perfilManager.dto.ra}" />
+												<br></br>
+											</h:panelGroup>
+
+											<br></br>
+											<p:outputLabel style="width:183%" value="SENHA ANTIGA" />
+											<p:inputText value="#{perfilManager.novasenha}" required="true"
+												type="password" label="text" />
+
+
+											<br></br>
+											<p:outputLabel style="width:183%" value="NOVA SENHA*" />
+											<p:inputText value="#{perfilManager.novaSenhaBd}"
+												required="true" type="password" label="text" />
+												
+											<br></br>
+											<p:outputLabel style="width:183%" value="CONFIRMAR NOVA SENHA*" />
+											<p:inputText value="#{perfilManager.novaSenhaconf}"
+												required="true" type="password" label="text" />
+
+
+											<br></br>
+											<br></br>
+											<br></br>
+												
+												<p:commandButton styleClass="btn btn-info"
+													id="idBotaCadEvento" value="Salvar Alterações"
+													action="#{perfilManager.Altera}" update="form1" ajax="false" />
+										</h:panelGrid>
+									</p:panel>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+			</div>
+		</section>
+
+	</ui:define>
+
+</ui:composition>

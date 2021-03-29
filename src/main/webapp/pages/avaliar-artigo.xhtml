@@ -1,0 +1,189 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Avaliar Artigo</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Avaliar Artigo</li>
+			</ol>
+		</section>
+		<section class="content">
+
+			<div class="box box-default">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Avaliar Artigo</h3>
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+
+				<h:form id="form1">
+					<p:growl id="mensagens" showDetail="true" sticky="true" />
+					<div class="box-body">
+						<table id="tabelaUsuarios"
+							class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Nome</th>
+									<th>Descrição</th>
+									<th><center>Download Artigo</center></th>
+									<th><center>Avaliar</center></th>
+									<th><center>Status da Avaliação</center></th>
+								</tr>
+							</thead>
+							<tbody>
+								<ui:repeat value="#{avaliarArtigoManager.listArtigo}"
+									var="artigo">
+									<tr>
+										<td>#{artigo.nome}</td>
+										<td>#{artigo.descricao}</td>
+										<td style="width: 150px;">
+											<center>
+												<p:commandButton value="Download" ajax="false"
+													onclick="PrimeFaces.monitorDownload(start, stop);"
+													icon="ui-icon-arrowthick-1-s">
+													<p:fileDownload
+														value="#{avaliarArtigoManager.getDownload(artigo)}" />
+												</p:commandButton>
+											</center>
+										</td>
+										<td style="width: 150px;">
+											<center>
+												<p:commandButton icon="fa fa-edit" title="View"
+													styleClass="btn btn-primary"
+													update="form1:artigoDetailInfo"
+													disabled="#{avaliarArtigoManager.verifyArtigo(artigo) eq true}"
+													oncomplete="PF('artigoDialogWid').show();" ajax="true"
+													action="#{avaliarArtigoManager.setSelectedArtigo(artigo)}" />
+											</center>
+										</td>
+										<td style="width: 150px;">
+											<center>
+												<p:outputLabel
+													rendered="#{avaliarArtigoManager.verifyArtigo(artigo)}">
+													<span class="label label-success">Avaliado</span>
+												</p:outputLabel>
+												<p:outputLabel
+													rendered="#{!avaliarArtigoManager.verifyArtigo(artigo)}">
+													<span class="label label-danger">Não Avaliado</span>
+												</p:outputLabel>
+											</center>
+										</td>
+									</tr>
+								</ui:repeat>
+							</tbody>
+							<tfoot>
+								<tr>
+									<th>Nome</th>
+									<th>Descrição</th>
+									<th><center>Download Artigo</center></th>
+									<th><center>Avaliar</center></th>
+									<th><center>Status da Avaliação</center></th>
+								</tr>
+							</tfoot>
+						</table>
+					</div>
+
+					<!-- MODAL PARA VISUALIZAR O EVENTO -->
+					<p:dialog header="Avaliar Artigo" widgetVar="artigoDialogWid"
+						id="artigoDialog" modal="true" width="800" height="350"
+						showEffect="fade" hideEffect="fade" resizable="false">
+						<p:outputPanel id="artigoDetailInfo" style="text-align:lefth;">
+
+							<!-- teste	 -->
+							<div class="col-sm-13 col-md-12">
+								<div>
+									<div class="caption">
+										<h3>
+											<b><i>#{avaliarArtigoManager.selectedArtigo.nome}</i></b>
+										</h3>
+										<br />
+										<p>Breve Descrição:
+											#{avaliarArtigoManager.selectedArtigo.descricao}</p>
+										<br />
+										<hr></hr>
+										<p>
+										<div class="form-group">
+											<p:outputLabel for="idDesc"
+												class="col-sm-2 form-control-prime" value="Parecer:" />
+
+											<div class="col-sm-5">
+												<h:inputTextarea id="idDesc" rows="6" cols="35"
+													counter="display" maxlength="250"
+													value="#{avaliarArtigoManager.parecer}"
+													counterTemplate="{0} Caractéres restantes."
+													autoResize="true" />
+												<br />
+												<h:outputText id="display" />
+											</div>
+											<div class="col-sm-3">
+												<h:outputText value="Aprovar Artigo: " />
+											</div>
+											<div class="col-sm-1">
+												<p:selectBooleanButton id="value2" styleClass="btn-info"
+													value="#{avaliarArtigoManager.aprovar}" onLabel="Sim"
+													offLabel="Não" onIcon="ui-icon-check"
+													offIcon="ui-icon-close" style="width:100px">
+													<!-- 													<p:ajax update="msgs" -->
+													<!-- 														listener="#{selectBooleanView.addMessage}" /> -->
+												</p:selectBooleanButton>
+
+											</div>
+											<p:commandButton styleClass="btn btn-info pull-right"
+												value="Salvar" update="form1"
+												action="#{avaliarArtigoManager.avaliarArtigo}" ajax="false" />
+
+										</div>
+										</p>
+
+										<!-- 										<p>Data de Termino: -->
+										<!-- 											#{eventoManager.convertDateToString(atv.dataFinal)}</p> -->
+										<!-- 										<br /> -->
+										<!-- 										<p> -->
+										<!-- 										<h5> -->
+										<!-- 											<b>#{atv.tema}</b> -->
+										<!-- 										</h5> -->
+										<!-- 										</p> -->
+									</div>
+								</div>
+							</div>
+
+							<!-- teste   -->
+						</p:outputPanel>
+					</p:dialog>
+				</h:form>
+
+			</div>
+			<div class="box-footer">
+				Visit <a href="#">Select2 documentation</a> for more examples and
+				information about the plugin.
+			</div>
+			<script>
+				$(function() {
+					$('#tabelaUsuarios').DataTable({
+						"paging" : true,
+						"lengthChange" : true,
+						"searching" : true,
+						"ordering" : true,
+						"info" : true,
+						"autoWidth" : true
+					});
+				});
+			</script>
+
+		</section>
+
+	</ui:define>
+
+</ui:composition>

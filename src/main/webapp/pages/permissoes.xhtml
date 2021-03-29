@@ -1,0 +1,100 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<section class="content-header">
+			<h1>Permissões</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Permissões</li>
+			</ol>
+		</section>
+		<section class="content">
+
+			<div class="box box-default">
+
+				<div class="box-header with-border">
+					<h3 class="box-title">Permissões do Sistema</h3>
+
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool"
+							data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+					</div>
+				</div>
+
+				<h:form id="form1">
+					<div class="box-body">
+						<table id="tabelaUsuarios"
+							class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>Nome</th>
+									<th>Sobrenome</th>
+									<th>E-mail</th>
+									<th>RA</th>
+									<th><center>Editar Permissão</center></th>
+								</tr>
+							</thead>
+							<tbody>
+								<ui:repeat value="#{permissoesManager.listaUsuario}"
+									var="usuario">
+									<tr>
+										<td>#{usuario.nome}</td>
+										<td>#{usuario.sobrenome}</td>
+										<td>#{usuario.email}</td>
+										<td>#{usuario.ra}</td>
+										<td>
+											<center>
+												<p:commandButton icon="fa fa-edit" title="View"
+													styleClass="btn btn-primary"
+													update=":form1:groupRadios" ajax="true"
+													action="#{permissoesManager.novaPermissao(usuario)}" />
+											</center>
+										</td>
+									</tr>
+								</ui:repeat>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="box-body">
+						<h:panelGroup id="groupRadios">
+							<h:selectOneRadio layout="pageDirection"
+								value="#{permissoesManager.idTipoUsuarioSelected}">
+								<f:selectItems value="#{permissoesManager.listaTipoUsuario}"
+									var="tipo" itemLabel="#{tipo.nome}" itemValue="#{tipo.id}" />
+							</h:selectOneRadio>
+						</h:panelGroup>
+					
+					
+					<p:commandButton styleClass="btn btn-info pull-right"
+						value="SALVAR" update="form1" ajax="false"
+						action="#{permissoesManager.salvarPermissao}" />
+
+					</div>
+				</h:form>
+
+			</div>
+			<script>
+			  $(function () {
+			    $('#tabelaUsuarios').DataTable({
+			      "paging": true,
+			      "lengthChange": true,
+			      "searching": true,
+			      "ordering": true,
+			      "info": true,
+			      "autoWidth": true
+			    });
+			  });
+			</script>
+
+		</section>
+
+	</ui:define>
+
+</ui:composition>

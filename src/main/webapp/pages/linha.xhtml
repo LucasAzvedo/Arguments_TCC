@@ -1,0 +1,158 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="template.xhtml">
+	<ui:define name="menu">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<h1>Linha</h1>
+			<ol class="breadcrumb">
+				<li><a href="#"><i class="fa fa-bullhorn"></i> Menu</a></li>
+				<li class="active">Linha Temporal</li>
+			</ol>
+		</section>
+		<section class="content">
+
+			<!-- row -->
+			<h:form id="form">
+				<div class="row">
+					<div class="col-md-12">
+						<!-- The time line -->
+						<ul class="timeline">
+							<ui:repeat value="#{timeLineManager.listaFilter}" var="filter">
+
+								<li class="time-label"><span class="bg-blue">
+										#{timeLineManager.convertDateToString(filter.data)} </span></li>
+
+								<ui:repeat value="#{filter.listaEvento}" var="evento">
+									<li><i class="fa fa-calendar bg-red"></i>
+
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+											<h3 class="timeline-header">
+												<i class="fa fa-user"></i>&#160;#{evento.usuario.nome}
+												#{evento.usuario.sobrenome}&#160;|&#160; <i
+													class="fa fa-graduation-cap"></i>&#160;#{evento.usuario.idInstituicaoCursos.idInstituicaoEntity.nome}
+											</h3>
+
+											<div class="timeline-body">Nome do evento:
+												#{evento.nome}</div>
+											<div class="timeline-body">Descrição:
+												#{evento.descricao}</div>
+										
+										</div></li>
+								</ui:repeat>
+
+								<ui:repeat value="#{filter.listaDebate}" var="debate">
+									<li><i class="fa fa-comments bg-green"></i>
+
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+
+											<h3 class="timeline-header no-border">
+												<i class="fa fa-bookmark"></i>&#160;#{debate.nome}&#160;|&#160;
+												<i class="fa fa-tags"></i>&#160;#{debate.tema}
+											</h3>
+
+											<div class="timeline-body">
+												<i class="fa fa-calendar-plus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataAbertura)}
+											</div>
+											<div class="timeline-body">
+												<i class="fa fa-calendar-minus-o"></i>&#160;#{timeLineManager.convertDateToStringFull(debate.dataFechamento)}
+											</div>
+
+											<div class="timeline-body">
+												<i class="fa fa-comment"></i>&#160;
+												#{timeLineManager.qtdComentariosDebate(debate.debate)}
+											</div>
+											<div class="timeline-footer">
+												<p:commandButton class="btn btn-primary btn-xs"
+													value="Comentar"
+													action="#{timeLineManager.comentarDebate(debate.debate)}"></p:commandButton>
+											</div>
+										</div></li>
+								</ui:repeat>
+
+								<ui:repeat value="#{filter.listaGrupo}" var="grupo">
+									<li><i class="fa fa-users bg-yellow"></i>
+
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+											<h3 class="timeline-header">
+												<i class="fa fa-info"></i>&#160;#{grupo.nomeGrupo}&#160;
+											</h3>
+
+											<div class="timeline-body">Descrição:&#160;#{grupo.descricaoGrupo}</div>
+											<div class="timeline-footer">
+												<i class="fa fa-user"></i>&#160;Max:&#160;#{grupo.qtdMaximaMembros}&#160;&#160;Total:&#160;#{timeLineManager.qtdMembros(grupo.grupo.id)}
+												<br /> <br />
+												<p:commandLink
+													rendered="#{timeLineManager.getValidaParticipacaoEmGrupos(grupo.grupo) eq false}"
+													action="#{timeLineManager.participarGrupos(grupo.grupo)}"
+													ajax="true" update="@form"
+													styleClass="btn btn-warning btn-flat btn-xs"
+													value="Participar" />
+
+												<p:commandLink
+													rendered="#{timeLineManager.getValidaParticipacaoEmGrupos(grupo.grupo) eq true}"
+													action="#{timeLineManager.cancelarPparticipacaoGrupos(grupo.grupo)}"
+													ajax="true" update="@form"
+													styleClass="btn btn-warning btn-flat btn-xs"
+													value="Cancelar Participação" />
+											</div>
+										</div></li>
+								</ui:repeat>
+
+								<ui:repeat value="#{filter.listaTrabalho}" var="trabalho">
+									<li><i class="fa fa-file bg-purple"></i>
+
+										<div class="timeline-item">
+											<span class="time"><i class="fa fa-clock-o"></i>&#160;#{timeLineManager.convertDateToStringHora(filter.data)}</span>
+
+											<h3 class="timeline-header">#{trabalho.nome}</h3>
+
+											<div class="timeline-body">
+												Descrição:&#160;#{trabalho.descricao} <br /> <br />
+												<p:commandButton value="Download" ajax="false"
+													class="btn btn-primary btn-xs"
+													onclick="PrimeFaces.monitorDownload(start, stop);"
+													icon="ui-icon-arrowthick-1-s">
+													<p:fileDownload
+														value="#{timeLineManager.getDownload(trabalho.trabalho)}" />
+												</p:commandButton>
+												<br /> <br /> <i class="fa fa-thumbs-up"></i>&#160;
+												<p:commandLink
+													rendered="#{timeLineManager.getValidaCurtirEmTrabalhos(trabalho.trabalho) eq false}"
+													value="Curtir"
+													action="#{timeLineManager.curtirTrabalho(trabalho.trabalho)}"
+													update="@form" ajax="true" />
+												<p:commandLink
+													rendered="#{timeLineManager.getValidaCurtirEmTrabalhos(trabalho.trabalho) eq true}"
+													value="Descurtir"
+													action="#{timeLineManager.descurtirTrabalho(trabalho.trabalho)}"
+													update="@form" ajax="true" />
+													
+												&#160;#{timeLineManager.qtdCurtidas(trabalho.trabalho)}
+											</div>
+										</div></li>
+								</ui:repeat>
+
+							</ui:repeat>
+						</ul>
+					</div>
+					<!-- /.col -->
+				</div>
+			</h:form>
+			<!-- /.row -->
+
+		</section>
+		<!-- /.content -->
+
+	</ui:define>
+
+</ui:composition>
